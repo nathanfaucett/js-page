@@ -95,7 +95,7 @@ page.init = page.listen = function() {
     addEvent(global, "hashchange", onhashchange);
 
     page.emit("listen");
-    page.go((pageHtml5Mode ? urlPath.relative(base, location.pathname) : location.hash.slice(1)) || "/");
+    page.go((pageHtml5Mode ? urlPath.relative(base, location.pathname + location.search) : location.hash.slice(1)) || "/");
 
     return page;
 };
