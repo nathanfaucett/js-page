@@ -1,0 +1,10 @@
+{
+  "name": "test",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "^2.1.1",
+    "request": "git://github.com/nathanfaucett/request",
+    "layers_browser": "git://github.com/nathanfaucett/layers_browser",
+    "promise": "git://github.com/nathanfaucett/promise"
+  }
+}
