@@ -21,9 +21,7 @@
   },
   "dependencies": {
     "type": "nathanfaucett/type",
-    "each": "nathanfaucett/each",
     "url_path": "nathanfaucett/url_path",
-    "utils": "nathanfaucett/utils",
     "urls": "nathanfaucett/urls",
     "event_emitter": "nathanfaucett/event_emitter"
   }
