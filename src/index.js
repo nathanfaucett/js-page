@@ -180,7 +180,11 @@ function onclick(e) {
     if (urlPath.isAbsoluteURL(link) && !sameOrigin(link)) return;
 
     e.preventDefault();
-    page.go(urls.parse(link).path);
+
+    link = urls.parse(link).path;
+    if (pageCurrentPath === link) return;
+
+    page.go(link);
 }
 
 function which(e) {
