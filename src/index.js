@@ -95,7 +95,7 @@ page.init = page.listen = function() {
     addEvent(global, "hashchange", onhashchange);
 
     page.emit("listen");
-    page.go((pageHtml5Mode ? urlPath.relative(base, location.pathname + location.search) : location.hash.slice(1)) || "/");
+    page.go((pageHtml5Mode ? urlPath.relative(pageBase, location.pathname + location.search) : location.hash.slice(1)) || "/");
 
     return page;
 };
@@ -142,7 +142,7 @@ function replaceState(ctx, path) {
     pageCurrentPath = path;
 
     if (pageHtml5Mode) {
-        history.replaceState(ctx, ctx.fullUrl.path, urlPath.join(base, path));
+        history.replaceState(ctx, ctx.fullUrl.path, urlPath.join(pageBase, path));
     } else {
         location.hash = path;
     }
