@@ -6,6 +6,8 @@ var urls = require("urls"),
 
 var page = new EventEmitter(),
 
+    location = global.location || {},
+
     pageHtml5Mode = false,
     pageOrigin = location.origin,
     pageBase = location.pathname || "/",
@@ -174,17 +176,13 @@ function onclick(e) {
 
     if (!link || el.target) return;
     if (link[0] === "#") link = link.slice(1);
-    if (link && link.indexOf("mailto:") > -1) return;
+    if (link && (link.indexOf("mailto:") > -1 || link.indexOf("tel:") > -1)) return;
 
     if (el.href && !sameOrigin(el.href)) return;
     if (urlPath.isAbsoluteURL(link) && !sameOrigin(link)) return;
 
     e.preventDefault();
-
-    link = urls.parse(link).path;
-    if (pageCurrentPath === link) return;
-
-    page.go(link);
+    page.go(urls.parse(link).path);
 }
 
 function which(e) {
