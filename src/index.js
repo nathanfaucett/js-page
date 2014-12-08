@@ -8,6 +8,7 @@ var page = new EventEmitter(),
 
     location = global.location || {},
 
+    pageListening = false,
     pageHtml5Mode = false,
     pageOrigin = location.origin,
     pageBase = location.pathname || "/",
@@ -20,7 +21,7 @@ var page = new EventEmitter(),
     supportsHtml5Mode = global.history && global.history.pushState,
     supportsEventListener = type.isNative(document.addEventListener),
 
-    addEvent, removeEvent, dispatchEvent;
+    addEvent, removeEvent;
 
 
 function sameOrigin(href) {
@@ -55,14 +56,6 @@ if (supportsEventListener) {
         elem.removeEventListener(name, handler, false);
         return true;
     };
-
-    dispatchEvent = function(elem, name) {
-        var event = document.createEvent("Event");
-
-        event.initEvent(name, true, true);
-
-        return elem.dispatchEvent(event);
-    };
 } else {
     addEvent = function(elem, name, handler) {
 
@@ -81,23 +74,34 @@ if (supportsEventListener) {
         elem.detachEvent("on" + name, elem[name + handler]);
         return true;
     };
-
-    dispatchEvent = function(elem, name) {
-        var event = document.createEventObject();
-
-        return elem.fireEvent("on" + name, event);
-    };
 }
 
 
 page.init = page.listen = function() {
+    if (pageListening === false) {
+        pageListening = true;
 
-    addEvent(global, "click", onclick);
-    addEvent(global, "popstate", onpopstate);
-    addEvent(global, "hashchange", onhashchange);
+        addEvent(global, "click", onclick);
+        addEvent(global, "popstate", onpopstate);
+        addEvent(global, "hashchange", onhashchange);
 
-    page.emit("listen");
-    page.go((pageHtml5Mode ? urlPath.relative(pageBase, location.pathname + location.search) : location.hash.slice(1)) || "/");
+        page.emit("listen");
+        page.go((pageHtml5Mode ? urlPath.relative(pageBase, location.pathname + location.search) : location.hash.slice(1)) || "/");
+    }
+
+    return page;
+};
+
+page.close = function() {
+    if (pageListening === true) {
+        pageListening = false;
+
+        removeEvent(global, "click", onclick);
+        removeEvent(global, "popstate", onpopstate);
+        removeEvent(global, "hashchange", onhashchange);
+
+        page.emit("close");
+    }
 
     return page;
 };
