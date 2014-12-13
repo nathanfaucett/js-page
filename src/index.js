@@ -18,9 +18,20 @@ var page = new EventEmitter(),
     sameOrigin_url = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,
     sameOrigin_parts = sameOrigin_url.exec(location.href),
 
-    supportsHtml5Mode = global.history && global.history.pushState,
-    supportsEventListener = type.isNative(document.addEventListener),
+    supportsHtml5Mode = (function() {
+        var userAgent = global.navigator.userAgent;
+        if (
+            (userAgent.indexOf("Android 2.") !== -1 || userAgent.indexOf("Android 4.0") !== -1) &&
+            userAgent.indexOf("Mobile Safari") !== -1 &&
+            userAgent.indexOf("Chrome") === -1
+        ) {
+            return false;
+        }
 
+        return (window.history && 'pushState' in window.history);
+    }()),
+
+    supportsEventListener = type.isNative(document.addEventListener),
     addEvent, removeEvent;
 
 
@@ -133,6 +144,11 @@ page.go = function(path) {
     page.emit("request", ctx);
 
     return page;
+};
+
+page.hasHistory = function() {
+
+    return pageHistory.length !== 0;
 };
 
 page.back = function() {
