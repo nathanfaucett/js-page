@@ -23,7 +23,9 @@
     "type": "nathanfaucett/type",
     "url_path": "nathanfaucett/url_path",
     "urls": "nathanfaucett/urls",
-    "event_emitter": "nathanfaucett/event_emitter"
+    "event_emitter": "nathanfaucett/event_emitter",
+    "event_listener": "nathanfaucett/event_listener",
+    "environment": "nathanfaucett/environment"
   }
 }
 

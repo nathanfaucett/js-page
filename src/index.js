@@ -1,12 +1,16 @@
 var urls = require("urls"),
     urlPath = require("url_path"),
     type = require("type"),
-    EventEmitter = require("event_emitter");
+    EventEmitter = require("event_emitter"),
+    eventListener = require("event_listener"),
+    environment = require("environment");
 
 
 var page = new EventEmitter(),
 
-    location = global.location || {},
+    window = environment.window,
+    location = window.location || {},
+    navigator = window.navigator || {},
 
     pageListening = false,
     pageHtml5Mode = false,
@@ -19,7 +23,7 @@ var page = new EventEmitter(),
     sameOrigin_parts = sameOrigin_url.exec(location.href),
 
     supportsHtml5Mode = (function() {
-        var userAgent = global.navigator.userAgent;
+        var userAgent = navigator.userAgent || "";
         if (
             (userAgent.indexOf("Android 2.") !== -1 || userAgent.indexOf("Android 4.0") !== -1) &&
             userAgent.indexOf("Mobile Safari") !== -1 &&
@@ -28,11 +32,8 @@ var page = new EventEmitter(),
             return false;
         }
 
-        return (window.history && 'pushState' in window.history);
-    }()),
-
-    supportsEventListener = type.isNative(document.addEventListener),
-    addEvent, removeEvent;
+        return (window.history && window.history.pushState != null);
+    }());
 
 
 function sameOrigin(href) {
@@ -57,44 +58,14 @@ function sameOrigin(href) {
     );
 }
 
-if (supportsEventListener) {
-    addEvent = function(elem, name, handler) {
-        elem.addEventListener(name, handler, false);
-        return handler;
-    };
-
-    removeEvent = function(elem, name, handler) {
-        elem.removeEventListener(name, handler, false);
-        return true;
-    };
-} else {
-    addEvent = function(elem, name, handler) {
-
-        function boundedHandler(e) {
-
-            return handler.call(elem, e);
-        }
-
-        elem[name + handler] = boundedHandler;
-        elem.attachEvent("on" + name, boundedHandler);
-
-        return handler;
-    };
-
-    removeEvent = function(elem, name, handler) {
-        elem.detachEvent("on" + name, elem[name + handler]);
-        return true;
-    };
-}
-
 
 page.init = page.listen = function() {
     if (pageListening === false) {
         pageListening = true;
 
-        addEvent(global, "click", onclick);
-        addEvent(global, "popstate", onpopstate);
-        addEvent(global, "hashchange", onhashchange);
+        eventListener.on(window, "click", onclick);
+        eventListener.on(window, "popstate", onpopstate);
+        eventListener.on(window, "hashchange", onhashchange);
 
         page.emit("listen");
         page.go((pageHtml5Mode ? urlPath.relative(pageBase, location.pathname + location.search) : location.hash.slice(1)) || "/");
@@ -107,9 +78,9 @@ page.close = function() {
     if (pageListening === true) {
         pageListening = false;
 
-        removeEvent(global, "click", onclick);
-        removeEvent(global, "popstate", onpopstate);
-        removeEvent(global, "hashchange", onhashchange);
+        eventListener.off(window, "click", onclick);
+        eventListener.off(window, "popstate", onpopstate);
+        eventListener.off(window, "hashchange", onhashchange);
 
         page.emit("close");
     }
@@ -206,7 +177,7 @@ function onclick(e) {
 }
 
 function which(e) {
-    e = e || global.event;
+    e = e || window.event;
     return e.which == null ? +e.button : +e.which;
 }
 
