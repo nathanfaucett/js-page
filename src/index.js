@@ -1,6 +1,6 @@
 var urls = require("urls"),
     urlPath = require("url_path"),
-    type = require("type"),
+    isString = require("is_string"),
     EventEmitter = require("event_emitter"),
     eventListener = require("event_listener"),
     environment = require("environment");
@@ -96,7 +96,7 @@ page.html5Mode = function(value) {
 };
 
 page.base = function(value) {
-    if (type.isString(value)) {
+    if (isString(value)) {
         pageBase = value;
     }
     return pageBase;
