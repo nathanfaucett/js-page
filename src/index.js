@@ -1,5 +1,6 @@
 var urls = require("urls"),
     urlPath = require("url_path"),
+    sameOrigin = require("same_origin"),
     isString = require("is_string"),
     EventEmitter = require("event_emitter"),
     eventListener = require("event_listener"),
@@ -19,9 +20,6 @@ var page = new EventEmitter(),
     pageCurrentPath = "",
     pageHistory = [],
 
-    sameOrigin_url = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,
-    sameOrigin_parts = sameOrigin_url.exec(location.href),
-
     supportsHtml5Mode = (function() {
         var userAgent = navigator.userAgent || "";
         if (
@@ -34,29 +32,6 @@ var page = new EventEmitter(),
 
         return (window.history && window.history.pushState != null);
     }());
-
-
-function sameOrigin(href) {
-    var parts, urlPort, testPort;
-
-    if (!urlPath.isAbsoluteURL(href)) return true;
-
-    parts = sameOrigin_url.exec(href.toLowerCase());
-
-    if (!parts) return false;
-
-    urlPort = sameOrigin_parts[3];
-    testPort = parts[3];
-
-    return !(
-        (parts[1] !== sameOrigin_parts[1]) ||
-        (parts[2] !== sameOrigin_parts[2]) || !(
-            (testPort === urlPort) ||
-            (!testPort && (urlPort === "80" || urlPort === "443")) ||
-            (!urlPort && (testPort === "80" || testPort === "443"))
-        )
-    );
-}
 
 
 page.init = page.listen = function() {
@@ -169,8 +144,8 @@ function onclick(e) {
     if (link[0] === "#") link = link.slice(1);
     if (link && (link.indexOf("mailto:") > -1 || link.indexOf("tel:") > -1)) return;
 
-    if (el.href && !sameOrigin(el.href)) return;
-    if (urlPath.isAbsoluteURL(link) && !sameOrigin(link)) return;
+    if (el.href && !sameOrigin(el.href, location.origin)) return;
+    if (urlPath.isAbsoluteURL(link) && !sameOrigin(link, location.origin)) return;
 
     e.preventDefault();
     page.go(urls.parse(link).path);

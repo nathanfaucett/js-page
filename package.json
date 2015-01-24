@@ -20,6 +20,7 @@
     "grunt-jsbeautifier": ""
   },
   "dependencies": {
+    "same_origin": "nathanfaucett/same_origin",
     "is_string": "nathanfaucett/is_string",
     "url_path": "nathanfaucett/url_path",
     "urls": "nathanfaucett/urls",
