@@ -133,19 +133,33 @@ function onhashchange() {
 function onclick(e) {
     var el, link;
 
-    if (which(e) !== 1) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-    if (e.defaultPrevented) return;
+    if (
+        which(e) !== 1 ||
+        e.metaKey || e.ctrlKey || e.shiftKey ||
+        e.defaultPrevented
+    ) {
+        return;
+    }
 
     el = e.target;
-    link = el.getAttribute("href");
+    link = el.getAttribute("href") || el.href;
 
-    if (!link || el.target) return;
-    if (link[0] === "#") link = link.slice(1);
-    if (link && (link.indexOf("mailto:") > -1 || link.indexOf("tel:") > -1)) return;
+    if (!link || el.target) {
+        return;
+    }
+    if (link[0] === "#") {
+        link = link.slice(1);
+    }
+    if (link && (link.indexOf("mailto:") > -1 || link.indexOf("tel:") > -1)) {
+        return;
+    }
 
-    if (el.href && !sameOrigin(el.href, location.origin)) return;
-    if (urlPath.isAbsoluteURL(link) && !sameOrigin(link, location.origin)) return;
+    if (
+        el.href && !sameOrigin.browser(el.href) ||
+        (urlPath.isAbsoluteURL(link) && !sameOrigin.browser(link))
+    ) {
+        return;
+    }
 
     e.preventDefault();
     page.go(urls.parse(link).path);

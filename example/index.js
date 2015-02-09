@@ -10,7 +10,6 @@ var $app = $("#app"),
 
 
 page.on("request", function(ctx) {
-
     router.handler(ctx);
 });
 
@@ -43,7 +42,7 @@ template.cache = {};
 
 router.use(
     function(ctx, next) {
-        template("example/templates/header.html").then(
+        template("templates/header.html").then(
             function(tmpl) {
                 $app.find("#header").html(tmpl);
                 next();
@@ -57,7 +56,7 @@ router.use(
 
 router.route(
     function(ctx, next) {
-        template("example/templates/home.html").then(
+        template("templates/home.html").then(
             function(tmpl) {
                 $app.find("#content").html(tmpl);
             },
@@ -70,7 +69,7 @@ router.route(
 
 router.route("users",
     function(ctx, next) {
-        template("example/templates/users.html").then(
+        template("templates/users.html").then(
             function(tmpl) {
                 $app.find("#content").html(tmpl);
             },
