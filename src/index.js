@@ -16,8 +16,8 @@ var page = new EventEmitter(),
     pageListening = false,
     pageHtml5Mode = false,
     pageOrigin = location.origin,
-    pageBase = location.pathname || "/",
-    pageCurrentPath = "",
+    pageBase = "/",
+    pageCurrentPath = location.pathname,
     pageHistory = [],
 
     supportsHtml5Mode = (function() {
@@ -78,15 +78,9 @@ page.base = function(value) {
 };
 
 page.go = function(path) {
-    var ctx = {},
-        fullUrl = urls.parse(pageOrigin + path, true);
+    var ctx = buildContext(path);
 
-    ctx.fullUrl = fullUrl;
-    ctx.pathname = fullUrl.pathname;
-    ctx.query = fullUrl.query;
-
-    replaceState(ctx, path);
-
+    replaceState(ctx, ctx.pathname);
     page.emit("request", ctx);
 
     return page;
@@ -105,6 +99,28 @@ page.back = function(fallback) {
 
     return page;
 };
+
+page.reload = function() {
+    var ctx = buildContext(pageCurrentPath);
+
+    replaceState(ctx, ctx.pathname);
+    page.emit("request", ctx);
+
+    return page;
+};
+
+function buildContext(path) {
+    var ctx = {},
+        fullUrl = urls.parse(pageOrigin + path, true);
+
+    ctx.fullUrl = fullUrl;
+    ctx.pathname = fullUrl.pathname;
+    ctx.query = fullUrl.query;
+
+    replaceState(ctx, path);
+
+    return ctx;
+}
 
 function replaceState(ctx, path) {
     pageHistory.push(pageCurrentPath);
