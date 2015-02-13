@@ -93,13 +93,14 @@ page.go = function(path) {
 };
 
 page.hasHistory = function() {
-
     return pageHistory.length !== 0;
 };
 
-page.back = function() {
+page.back = function(fallback) {
     if (pageHistory.length) {
         page.go(pageHistory.pop());
+    } else if (fallback) {
+        page.go(fallback);
     }
 
     return page;
