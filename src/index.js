@@ -91,13 +91,25 @@ page.hasHistory = function() {
 };
 
 page.back = function(fallback) {
-    if (pageHistory.length) {
-        page.go(pageHistory.pop());
-    } else if (fallback) {
-        page.go(fallback);
+    var history = pageHistory,
+        currentPath = pageCurrentPath,
+        i = history.length,
+        path;
+
+    while (i--) {
+        path = history[i];
+
+        if (path !== currentPath) {
+            history.length = i + 1;
+            return page.go(path);
+        }
     }
 
-    return page;
+    if (isString(fallback)) {
+        return page.go(fallback);
+    } else {
+        return false;
+    }
 };
 
 page.reload = function() {

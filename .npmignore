@@ -1,6 +1,9 @@
 node_modules
 node_modules/*
 node_modules/**/*
+example
+example/*
+example/**/*
 npm-debug.log
 .npmignore
 .gitignore
