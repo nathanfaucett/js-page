@@ -118,13 +118,19 @@ page.reload = function() {
     return page;
 };
 
+function end() {
+    this.forceEnd = true;
+}
+
 function buildContext(path) {
     var ctx = {},
         fullUrl = urls.parse(pageOrigin + path, true);
 
+    ctx.forceEnd = false;
     ctx.fullUrl = fullUrl;
     ctx.pathname = fullUrl.pathname;
     ctx.query = fullUrl.query;
+    ctx.end = end;
 
     return ctx;
 }
