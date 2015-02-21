@@ -80,7 +80,7 @@ page.base = function(value) {
 page.go = function(path) {
     var ctx = buildContext(path);
 
-    replaceState(ctx, ctx.pathname);
+    replaceState(ctx, ctx.fullUrl.path);
     page.emit("request", ctx);
 
     return page;
@@ -125,8 +125,6 @@ function buildContext(path) {
     ctx.fullUrl = fullUrl;
     ctx.pathname = fullUrl.pathname;
     ctx.query = fullUrl.query;
-
-    replaceState(ctx, path);
 
     return ctx;
 }
