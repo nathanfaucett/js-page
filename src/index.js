@@ -172,14 +172,24 @@ function onclick(e) {
     }
 
     el = e.target;
+    while (el && el.nodeName !== "A") {
+        el = el.parentNode;
+    }
+
+    if (!el || "A" !== el.nodeName ||
+        el.getAttribute("download") || el.getAttribute("rel") === "external"
+    ) {
+        return;
+    }
+
     link = el.getAttribute("href") || el.href;
 
     if (!link || el.target) {
         return;
     }
-    if (link[0] === "#") {
-        link = link.slice(1);
-    }
+
+    link = link[0] === "#" ? link.slice(1) : link;
+
     if (link && (link.indexOf("mailto:") > -1 || link.indexOf("tel:") > -1)) {
         return;
     }
