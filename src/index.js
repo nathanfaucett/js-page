@@ -118,19 +118,19 @@ page.reload = function() {
     return page;
 };
 
-function end() {
-    this.forceEnd = true;
-}
-
 function buildContext(path) {
     var ctx = {},
-        fullUrl = urls.parse(pageOrigin + path, true);
+        fullUrl = urls.parse(pageOrigin + path, true),
+        pathname = fullUrl.pathname;
 
     ctx.forceEnd = false;
     ctx.fullUrl = fullUrl;
-    ctx.pathname = fullUrl.pathname;
+    ctx.pathname = pathname;
     ctx.query = fullUrl.query;
-    ctx.end = end;
+
+    ctx.end = function() {
+        ctx.forceEnd = true;
+    };
 
     return ctx;
 }
@@ -138,7 +138,10 @@ function buildContext(path) {
 function replaceState(ctx, path) {
     pageHistory.push(pageCurrentPath);
     pageCurrentPath = path;
+    setState(ctx, path);
+}
 
+function setState(ctx, path) {
     if (pageHtml5Mode) {
         history.replaceState(ctx, ctx.fullUrl.path, urlPath.join(pageBase, path));
     } else {

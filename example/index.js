@@ -10,7 +10,11 @@ var $app = $("#app"),
 
 
 page.on("request", function(ctx) {
-    router.handler(ctx);
+    router.handler(ctx, function(err) {
+        if (err) {
+            throw err;
+        }
+    });
 });
 
 
@@ -45,9 +49,11 @@ router.use(
         template("templates/header.html").then(
             function(tmpl) {
                 $app.find("#header").html(tmpl);
+                ctx.end();
                 next();
             },
             function() {
+                ctx.end();
                 next();
             }
         );
@@ -59,8 +65,11 @@ router.route(
         template("templates/home.html").then(
             function(tmpl) {
                 $app.find("#content").html(tmpl);
+                ctx.end();
+                next();
             },
             function(response) {
+                ctx.end();
                 next(new Error(response.statusCode));
             }
         );
@@ -72,8 +81,11 @@ router.route("users",
         template("templates/users.html").then(
             function(tmpl) {
                 $app.find("#content").html(tmpl);
+                ctx.end();
+                next();
             },
             function(response) {
+                ctx.end();
                 next(new Error(response.statusCode));
             }
         );
@@ -81,11 +93,12 @@ router.route("users",
 );
 
 router.use(
-    function(err) {
+    function(err, ctx, next) {
         if (err) {
-            throw err;
+            next(err);
+        } else {
+            next();
         }
-        console.log("Not Found");
     }
 );
 

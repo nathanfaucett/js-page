@@ -20,13 +20,12 @@
     "grunt-jsbeautifier": ""
   },
   "dependencies": {
-    "same_origin": "nathanfaucett/same_origin",
-    "is_string": "nathanfaucett/is_string",
-    "url_path": "nathanfaucett/url_path",
-    "urls": "nathanfaucett/urls",
+    "environment": "nathanfaucett/environment",
     "event_emitter": "nathanfaucett/event_emitter",
     "event_listener": "nathanfaucett/event_listener",
-    "environment": "nathanfaucett/environment"
+    "is_string": "nathanfaucett/is_string",
+    "same_origin": "nathanfaucett/same_origin",
+    "url_path": "nathanfaucett/url_path",
+    "urls": "nathanfaucett/urls"
   }
 }
-
