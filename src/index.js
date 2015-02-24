@@ -10,9 +10,12 @@ var urls = require("urls"),
 var page = new EventEmitter(),
 
     window = environment.window,
+    document = environment.document,
+
     location = window.location || {},
     navigator = window.navigator || {},
 
+    pageTitle = document.title || "",
     pageListening = false,
     pageHtml5Mode = false,
     pageOrigin = location.origin,
@@ -84,6 +87,23 @@ page.go = function(path) {
     page.emit("request", ctx);
 
     return page;
+};
+
+page.titleBase = function(value) {
+    if (isString(value)) {
+        pageTitle = value;
+    }
+    return pageTitle;
+};
+
+page.title = function(value) {
+    if (isString(value)) {
+        value = pageTitle + value;
+        document.title = value;
+    } else {
+        value = document.title;
+    }
+    return value;
 };
 
 page.hasHistory = function() {
