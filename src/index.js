@@ -14,6 +14,7 @@ var page = new EventEmitter(),
 
     location = window.location || {},
     navigator = window.navigator || {},
+    history = window.history,
 
     pageTitle = document.title || "",
     pageListening = false,
@@ -33,7 +34,7 @@ var page = new EventEmitter(),
             return false;
         }
 
-        return (window.history && window.history.pushState != null);
+        return (history && history.pushState != null);
     }());
 
 
@@ -111,16 +112,16 @@ page.hasHistory = function() {
 };
 
 page.back = function(fallback) {
-    var history = pageHistory,
+    var historyCache = pageHistory,
         currentPath = pageCurrentPath,
-        i = history.length,
+        i = historyCache.length,
         path;
 
     while (i--) {
-        path = history[i];
+        path = historyCache[i];
 
         if (path !== currentPath) {
-            history.length = i + 1;
+            historyCache.length = i + 1;
             return page.go(path);
         }
     }
@@ -143,14 +144,9 @@ function buildContext(path) {
         fullUrl = urls.parse(pageOrigin + path, true),
         pathname = fullUrl.pathname;
 
-    ctx.forceEnd = false;
     ctx.fullUrl = fullUrl;
     ctx.pathname = pathname;
     ctx.query = fullUrl.query;
-
-    ctx.end = function() {
-        ctx.forceEnd = true;
-    };
 
     return ctx;
 }
@@ -163,7 +159,9 @@ function replaceState(ctx, path) {
 
 function setState(ctx, path) {
     if (pageHtml5Mode) {
-        history.replaceState(ctx, ctx.fullUrl.path, urlPath.join(pageBase, path));
+        history.replaceState({
+            path: ctx.path
+        }, ctx.fullUrl.path, urlPath.join(pageBase, path));
     } else {
         location.hash = path;
     }
