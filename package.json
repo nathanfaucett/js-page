@@ -7,6 +7,9 @@
     "url": "https://github.com/nathanfaucett/page.git"
   },
   "main": "src/index.js",
+  "scripts": {
+    "example": "comn -f example/index.js -o example/index.min.js"
+  },
   "keywords": [
     "page",
     "page.js"
@@ -15,17 +18,18 @@
   "license": "BSD-2-Clause",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "comn": "git://github.com/nathanfaucett/comn.git",
     "grunt": "",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-jsbeautifier": ""
   },
   "dependencies": {
-    "environment": "nathanfaucett/environment",
-    "event_emitter": "nathanfaucett/event_emitter",
-    "event_listener": "nathanfaucett/event_listener",
-    "is_string": "nathanfaucett/is_string",
-    "same_origin": "nathanfaucett/same_origin",
-    "url_path": "nathanfaucett/url_path",
-    "urls": "nathanfaucett/urls"
+    "environment": "git://github.com/nathanfaucett/environment.git",
+    "event_emitter": "git://github.com/nathanfaucett/event_emitter.git",
+    "event_listener": "git://github.com/nathanfaucett/event_listener.git",
+    "is_string": "git://github.com/nathanfaucett/is_string.git",
+    "same_origin": "git://github.com/nathanfaucett/same_origin.git",
+    "url_path": "git://github.com/nathanfaucett/url_path.git",
+    "urls": "git://github.com/nathanfaucett/urls.git"
   }
 }

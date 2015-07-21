@@ -1,6 +1,6 @@
 var $ = require("jquery"),
     request = require("request"),
-    PolyPromise = require("promise"),
+    PolyPromise = require("promise_polyfill"),
     layers = require("layers_browser"),
     page = global.page = require("../src/index.js");
 
@@ -10,9 +10,9 @@ var $app = $("#app"),
 
 
 page.on("request", function(ctx) {
-    router.handler(ctx, function(err) {
-        if (err) {
-            throw err;
+    router.handler(ctx, function(error) {
+        if (error) {
+            throw error;
         }
     });
 });
@@ -49,11 +49,9 @@ router.use(
         template("templates/header.html").then(
             function(tmpl) {
                 $app.find("#header").html(tmpl);
-                ctx.end();
                 next();
             },
             function() {
-                ctx.end();
                 next();
             }
         );
@@ -76,7 +74,7 @@ router.route(
     }
 );
 
-router.route("users",
+router.route("/users",
     function(ctx, next) {
         template("templates/users.html").then(
             function(tmpl) {
@@ -93,9 +91,9 @@ router.route("users",
 );
 
 router.use(
-    function(err, ctx, next) {
-        if (err) {
-            next(err);
+    function(error, ctx, next) {
+        if (error) {
+            next(error);
         } else {
             next();
         }
