@@ -1,9 +1,5 @@
-node_modules
-node_modules/*
-node_modules/**/*
 example
-example/*
-example/**/*
+node_modules
 npm-debug.log
 .npmignore
 .gitignore
