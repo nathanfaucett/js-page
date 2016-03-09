@@ -8,7 +8,7 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "example": "comn -f example/index.js -o example/index.min.js"
+    "example": "comn -f ./example/index.js -o ./example/index.min.js"
   },
   "keywords": [
     "page",
@@ -27,8 +27,10 @@
     "environment": "git://github.com/nathanfaucett/environment.git",
     "event_emitter": "git://github.com/nathanfaucett/event_emitter.git",
     "event_listener": "git://github.com/nathanfaucett/event_listener.git",
-    "is_string": "git://github.com/nathanfaucett/is_string.git",
+    "messenger": "git://github.com/nathanfaucett/messenger.git",
+    "messenger_adapter": "git://github.com/nathanfaucett/messenger_adapter.git",
     "same_origin": "git://github.com/nathanfaucett/same_origin.git",
+    "supports": "git://github.com/nathanfaucett/supports.git",
     "url_path": "git://github.com/nathanfaucett/url_path.git",
     "urls": "git://github.com/nathanfaucett/urls.git"
   }

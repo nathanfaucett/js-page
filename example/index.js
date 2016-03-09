@@ -2,7 +2,7 @@ var $ = require("jquery"),
     request = require("request"),
     PolyPromise = require("promise_polyfill"),
     layers = require("layers_browser"),
-    page = global.page = require("../src/index.js");
+    page = global.page = require("..");
 
 
 var $app = $("#app"),
@@ -10,15 +10,12 @@ var $app = $("#app"),
 
 
 page.on("request", function(ctx) {
-    router.handler(ctx, function(error) {
+    router.handler(ctx, function onHandler(error) {
         if (error) {
             throw error;
         }
     });
 });
-
-
-page.html5Mode(false);
 
 
 function template(url) {
@@ -101,4 +98,6 @@ router.use(
 );
 
 
-page.listen();
+page.setHtml5Mode(false, function onSetHtml5Mode() {
+    page.listen();
+});
