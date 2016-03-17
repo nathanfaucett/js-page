@@ -323,10 +323,12 @@ PagePrototype.back = function(data, callback) {
 
     return false;
 };
-PagePrototype.reload = function(path, callback) {
+PagePrototype.reload = function(callback) {
     var ctx = Page_createContext(this, this.__currentPath);
     this.emitArg("request", ctx);
-    this.__messenger.emit(this.__name + ".reload", null, callback);
+    this.__messenger.emit(this.__name + ".reload", {
+        ctx: ctx
+    }, callback);
     return this;
 };
 

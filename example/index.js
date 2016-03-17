@@ -10,6 +10,7 @@ var $app = $("#app"),
 
 
 page.on("request", function(ctx) {
+    console.log(ctx);
     router.handler(ctx, function onHandler(error) {
         if (error) {
             throw error;
