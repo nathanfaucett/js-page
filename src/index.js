@@ -1,4 +1,4 @@
-var Messenger = require("messenger"),
+var Messenger = require("@nathanfaucett/messenger"),
     adapter = require("./adapter"),
     client = require("./client"),
     server = require("./server");

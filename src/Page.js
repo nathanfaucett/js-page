@@ -1,10 +1,10 @@
-var urls = require("urls"),
-    urlPath = require("url_path"),
-    sameOrigin = require("same_origin"),
-    EventEmitter = require("event_emitter"),
-    eventListener = require("event_listener"),
-    environment = require("environment"),
-    supports = require("supports");
+var urls = require("@nathanfaucett/urls"),
+    urlPath = require("@nathanfaucett/url_path"),
+    sameOrigin = require("@nathanfaucett/same_origin"),
+    EventEmitter = require("@nathanfaucett/event_emitter"),
+    eventListener = require("@nathanfaucett/event_listener"),
+    environment = require("@nathanfaucett/environment"),
+    supports = require("@nathanfaucett/supports");
 
 
 var window = environment.window,

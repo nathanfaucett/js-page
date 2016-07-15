@@ -1,7 +1,7 @@
 var $ = require("jquery"),
-    request = require("request"),
-    PolyPromise = require("promise_polyfill"),
-    layers = require("layers_browser"),
+    request = require("@nathanfaucett/request"),
+    PolyPromise = require("@nathanfaucett/promise_polyfill"),
+    layers = require("@nathanfaucett/layers_browser"),
     page = global.page = require("..");
 
 
