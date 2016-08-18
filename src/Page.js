@@ -1,4 +1,4 @@
-var urls = require("@nathanfaucett/urls"),
+var url = require("@nathanfaucett/url"),
     urlPath = require("@nathanfaucett/url_path"),
     sameOrigin = require("@nathanfaucett/same_origin"),
     EventEmitter = require("@nathanfaucett/event_emitter"),
@@ -334,7 +334,7 @@ PagePrototype.reload = function(callback) {
 
 function Page_createContext(_this, path) {
     var ctx = {},
-        fullUrl = urls.parse(_this.__origin + path, true),
+        fullUrl = url.parse(_this.__origin + path, true),
         pathname = fullUrl.pathname;
 
     ctx.fullUrl = fullUrl;
@@ -417,7 +417,7 @@ function onClick(_this, e) {
 
     e.preventDefault();
 
-    _this.go(urls.parse(link).path);
+    _this.go(url.parse(link).path);
 }
 
 function which(e) {
