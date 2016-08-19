@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/page",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "page for the browser",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "@nathanfaucett/event_listener": "^0.0.1",
     "@nathanfaucett/messenger": "^0.0.1",
     "@nathanfaucett/messenger_adapter": "^0.0.1",
-    "@nathanfaucett/same_origin": "^0.0.1",
+    "@nathanfaucett/same_origin": "^0.0.2",
     "@nathanfaucett/supports": "^0.0.1",
     "@nathanfaucett/url_path": "^0.0.1",
     "@nathanfaucett/url": "^0.0.1"

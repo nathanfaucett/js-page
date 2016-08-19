@@ -44,7 +44,11 @@ function Page() {
 
     this.__title = document.title || "";
     this.__titleBase = this.__title;
-    this.__origin = location.origin;
+    this.__origin = location.origin || (
+        location.protocol + "//" +
+        location.hostname +
+        (location.port ? ":" + location.port : "")
+    );
     this.__base = "/";
     this.__currentPath = location.pathname;
     this.__history = [];

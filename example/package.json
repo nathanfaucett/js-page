@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "jquery": "^2.1.1",
-    "@nathanfaucett/request": "^0.0.2",
-    "@nathanfaucett/layers_browser": "^0.0.1",
+    "@nathanfaucett/request": "^0.0.6",
+    "@nathanfaucett/layers_browser": "^0.0.3",
     "@nathanfaucett/promise_polyfill": "^0.0.1"
   }
 }
