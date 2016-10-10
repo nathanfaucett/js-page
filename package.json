@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/page",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "page for the browser",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "@nathanfaucett/comn": "^0.0.11",
+    "@nathanfaucett/comn": "^0.0.13",
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-jsbeautifier": "^0.2.13"
@@ -32,6 +32,6 @@
     "@nathanfaucett/same_origin": "^0.0.3",
     "@nathanfaucett/supports": "^0.0.2",
     "@nathanfaucett/url_path": "^0.0.1",
-    "@nathanfaucett/url": "^0.0.2"
+    "@nathanfaucett/url": "^0.0.3"
   }
 }
