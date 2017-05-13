@@ -10,7 +10,6 @@ var $app = $("#app"),
 
 
 page.on("request", function(ctx) {
-    console.log(ctx);
     router.handler(ctx, function onHandler(error) {
         if (error) {
             throw error;
@@ -101,4 +100,5 @@ router.use(
 
 page.setHtml5Mode(false, function onSetHtml5Mode() {
     page.listen();
+    page.setPathNoEmit("/bobby");
 });
