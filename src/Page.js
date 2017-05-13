@@ -39,7 +39,7 @@ function Page() {
     EventEmitter.call(this, -1);
 
     this._name = null;
-    this._emit = true;
+    this._canChangeState = true;
     this._socketName = null;
     this._isClient = null;
 
@@ -150,7 +150,7 @@ function Page_init(_this, callback) {
     messenger.on(_this._socketName + ".getTitle", _this.onGetTitle);
     messenger.on(_this._socketName + ".setTitle", _this.onSetTitle);
 
-    messenger.on(_this._socketName + ".setPathNoEmit", _this.onSetPathNoEmit);
+    messenger.on(_this._socketName + ".setPathNoStateChange", _this.onSetPathNoEmit);
 
     messenger.on(_this._socketName + ".back", _this.onBack);
     messenger.on(_this._socketName + ".go", _this.onGo);
@@ -227,16 +227,14 @@ PagePrototype._onSetPathNoEmit = function(data, callback) {
 };
 
 PagePrototype._onGo = function(data, callback) {
-    var ctx = data.ctx,
-        lastEmit = this._emit;
+    var ctx = data.ctx;
 
-    this._emit = !!data.emit;
-
+    this._canChangeState = !!data.canChangeState;
     Page_replaceState(this, ctx, ctx.fullUrl.path);
     Page_emitRequest(this, ctx);
-    callback(undefined, ctx);
+    this._canChangeState = true;
 
-    this._emit = lastEmit;
+    callback(undefined, ctx);
 
     return this;
 };
@@ -259,15 +257,13 @@ PagePrototype._onBack = function(data, callback) {
     return false;
 };
 PagePrototype._onReload = function(data, callback) {
-    var ctx = data.ctx,
-        lastEmit = this._emit;
+    var ctx = data.ctx;
 
-    this._emit = !!data.emit;
-
+    this._canChangeState = !!data.canChangeState;
     Page_emitRequest(this, ctx);
-    callback(undefined, ctx);
+    this._canChangeState = true;
 
-    this._emit = lastEmit;
+    callback(undefined, ctx);
 
     return this;
 };
@@ -336,17 +332,16 @@ PagePrototype.setTitle = function(value, callback) {
     return this;
 };
 
-PagePrototype.setPathNoEmit = function(path, callback) {
-    var ctx = Page_createContext(this, path),
-        lastEmit = this._emit;
+PagePrototype.setPathNoStateChange = function(path, callback) {
+    var ctx = Page_createContext(this, path);
 
-    this._emit = false;
+    this._canChangeState = false;
     Page_setState(this, ctx, ctx.fullUrl.path);
-    this._emit = lastEmit;
+    this._canChangeState = true;
 
-    this._messenger.emit(this._name + ".setPathNoEmit", {
+    this._messenger.emit(this._name + ".setPathNoStateChange", {
         ctx: ctx,
-        emit: false
+        canChangeState: false
     }, callback);
 
     return this;
@@ -359,7 +354,8 @@ PagePrototype.go = function(path, callback) {
     Page_emitRequest(this, ctx);
 
     this._messenger.emit(this._name + ".go", {
-        ctx: ctx
+        ctx: ctx,
+        canChangeState: true
     }, callback);
 
     return this;
@@ -388,14 +384,15 @@ PagePrototype.reload = function(callback) {
     Page_emitRequest(this, ctx);
 
     this._messenger.emit(this._name + ".reload", {
-        ctx: ctx
+        ctx: ctx,
+        canChangeState: true
     }, callback);
 
     return this;
 };
 
 function Page_emitRequest(_this, ctx) {
-    if (_this._emit) {
+    if (_this._canChangeState) {
         _this.emitArg("request", ctx);
     }
 }
